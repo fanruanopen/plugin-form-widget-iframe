@@ -1,6 +1,7 @@
 package com.fr.plugin.form.widget.core;
 
 import com.fr.form.ui.FieldEditor;
+import com.fr.general.Inter;
 import com.fr.general.xml.GeneralXMLTools;
 import com.fr.json.JSONArray;
 import com.fr.json.JSONException;
@@ -9,7 +10,9 @@ import com.fr.plugin.ExtraClassManager;
 import com.fr.plugin.form.widget.monitor.RHFunctionProcessor;
 import com.fr.script.Calculator;
 import com.fr.stable.core.NodeVisitor;
+import com.fr.stable.fun.FunctionHelper;
 import com.fr.stable.fun.FunctionProcessor;
+import com.fr.stable.fun.impl.AbstractFunctionProcessor;
 import com.fr.stable.script.CalculatorProvider;
 import com.fr.stable.web.Repository;
 import com.fr.stable.xml.XMLPrintWriter;
@@ -22,6 +25,17 @@ import javax.servlet.http.HttpServletRequest;
  * Created by richie on 15/12/2.
  */
 public class RHIframe extends FieldEditor {
+
+    private static final FunctionProcessor RH = new AbstractFunctionProcessor() {
+        @Override
+        public int getId() {
+            return FunctionHelper.generateFunctionID(Constants.PLUGIN_ID);
+        }
+
+        public String getLocaleKey() {
+            return Inter.getLocText("Plugin-RH_Iframe_Name");
+        }
+    };
 
 
     private boolean overflowX = true;
@@ -61,6 +75,10 @@ public class RHIframe extends FieldEditor {
 
     @Override
     public JSONObject createJSONConfig(Repository repo, Calculator c, NodeVisitor nodeVisitor) throws JSONException {
+        FunctionProcessor p = ExtraClassManager.getInstance().getFunctionProcessor();
+        if (p != null) {
+            p.recordFunction(RH);
+        }
         JSONObject jo = super.createJSONConfig(repo, c, nodeVisitor);
         attr.mixConfig(jo, c, repo.getHttpServletRequest());
         jo.put("showOverFlowX", overflowX);

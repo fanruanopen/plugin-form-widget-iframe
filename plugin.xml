@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><plugin>
-    <id>com.fr.plugin.form.widget.rh.iframe</id>
+    <id>com.fr.solution.plugin.form.widget.rh.iframe</id>
     <name><![CDATA[网页框控件]]></name>
     <active>yes</active>
-    <version>3.2</version>
+    <version>3.3</version>
     <env-version>8.0</env-version>
     <jartime>2016-01-15</jartime>
-    <vendor>洪七公</vendor>
+    <vendor email="solution@finereport.com">solution</vendor>
     <description><![CDATA[网页框控件,仅支持在表单中使用]]></description>
     <change-notes><![CDATA[
        <p>[2015-12-03]修复再次打开地址设置界面时没有正确选择到选项的问题</p>

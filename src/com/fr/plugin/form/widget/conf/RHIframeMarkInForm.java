@@ -11,9 +11,8 @@ import com.fr.plugin.form.widget.ui.XRHIframe;
  */
 public class RHIframeMarkInForm extends AbstractFormWidgetOptionProvider {
 
-    @Override
     public int currentAPILevel() {
-        return CURRENT_LEVEL;
+        return 1;
     }
 
     @Override
