@@ -2,7 +2,7 @@
     <id>com.fr.solution.plugin.form.widget.rh.iframe</id>
     <name><![CDATA[网页框控件]]></name>
     <active>yes</active>
-    <version>3.3</version>
+    <version>4.0</version>
     <env-version>8.0</env-version>
     <jartime>2016-01-15</jartime>
     <vendor email="solution@finereport.com">solution</vendor>
@@ -11,15 +11,19 @@
        <p>[2015-12-03]修复再次打开地址设置界面时没有正确选择到选项的问题</p>
        <p>[2016-01-13]增加常用的API接口</p>
        <p>[2016-01-15]实现功能改进数据统计接口</p>
+       <p>[2016-03-28]在填报中也可以使用</p>
     ]]></change-notes>
     <extra-core>
         <LocaleFinder class="com.fr.plugin.form.widget.locale.LocaleFinder"/>
-        <JavaScriptFileHandler class="com.fr.plugin.form.widget.JavaScriptFileLoader"/>
     </extra-core>
+    <extra-form>
+        <JavaScriptFileHandler class="com.fr.plugin.form.widget.JavaScriptFileLoader"/>
+    </extra-form>
     <extra-report>
     </extra-report>
     <extra-platform/>
     <extra-designer>
         <FormWidgetOptionProvider class="com.fr.plugin.form.widget.conf.RHIframeMarkInForm"/>
+        <CellWidgetOptionProvider class="com.fr.plugin.form.widget.conf.RHIframeMarkInCell"/>
     </extra-designer>
 </plugin>

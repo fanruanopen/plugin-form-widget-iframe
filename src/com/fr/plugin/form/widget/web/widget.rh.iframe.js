@@ -94,11 +94,7 @@
         },
 
         createNoRepeatName: function () {
-            var len = $('iframe' + this.options.baseClass).length;
-            while ($('iframe[name=' + this.options.baseName + len + ']').length !== 0) {
-                len++;
-            }
-            return this.options.baseName + len;
+            return this.options.baseName + Math.random();
         },
 
         // richer:以get的方式获取ifram的参数
