@@ -1,6 +1,9 @@
 package com.fr.plugin.form.widget.core;
 
+import com.fr.form.ui.DataControl;
 import com.fr.form.ui.FieldEditor;
+import com.fr.form.ui.WidgetValue;
+import com.fr.general.FRLogger;
 import com.fr.general.Inter;
 import com.fr.general.xml.GeneralXMLTools;
 import com.fr.json.JSONArray;
@@ -9,6 +12,8 @@ import com.fr.json.JSONObject;
 import com.fr.plugin.ExtraClassManager;
 import com.fr.plugin.form.widget.monitor.RHFunctionProcessor;
 import com.fr.script.Calculator;
+import com.fr.stable.ArrayUtils;
+import com.fr.stable.DependenceProvider;
 import com.fr.stable.core.NodeVisitor;
 import com.fr.stable.fun.FunctionHelper;
 import com.fr.stable.fun.FunctionProcessor;
@@ -24,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by richie on 15/12/2.
  */
-public class RHIframe extends FieldEditor {
+public class RHIframe extends FieldEditor implements DataControl {
 
     private static final FunctionProcessor RH = new AbstractFunctionProcessor() {
         @Override
@@ -72,7 +77,6 @@ public class RHIframe extends FieldEditor {
         this.overflowY = overflowY;
     }
 
-
     @Override
     public JSONObject createJSONConfig(Repository repo, Calculator c, NodeVisitor nodeVisitor) throws JSONException {
         FunctionProcessor p = ExtraClassManager.getInstance().getFunctionProcessor();
@@ -114,7 +118,10 @@ public class RHIframe extends FieldEditor {
 
     @Override
     public String[] dependence(CalculatorProvider ca) {
-        return new String[0];
+        if (attr == null) {
+            return ArrayUtils.EMPTY_STRING_ARRAY;
+        }
+        return attr.dependence(ca);
     }
 
     @Override
@@ -140,6 +147,31 @@ public class RHIframe extends FieldEditor {
         writer.end();
         if (attr != null) {
             GeneralXMLTools.writeXMLable(writer, attr, RHIframeAttr.XML_TAG);
+        }
+    }
+
+    @Override
+    public int[] getValueType() {
+        return new int[0];
+    }
+
+    @Override
+    public void setWidgetValue(WidgetValue value) {
+
+    }
+
+    @Override
+    public WidgetValue getWidgetValue() {
+        return null;
+    }
+
+    @Override
+    public void createValueResult(DataControl widget, Calculator widgetCalculator, JSONObject widgetResult, JSONObject attrSourceCache) {
+        try {
+            JSONObject data = JSONObject.create();
+            widgetResult.put(widgetName.toUpperCase(), data);
+        } catch (JSONException e) {
+            FRLogger.getLogger().error(e.getMessage(), e);
         }
     }
 }

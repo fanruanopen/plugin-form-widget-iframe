@@ -1,13 +1,21 @@
 package com.fr.plugin.form.widget.core;
 
+import com.fr.base.Parameter;
+import com.fr.base.ParameterHelper;
 import com.fr.base.TemplateUtils;
 import com.fr.data.NetworkHelper;
 import com.fr.general.Inter;
 import com.fr.script.Calculator;
+import com.fr.stable.ArrayUtils;
+import com.fr.stable.script.CalculatorProvider;
 import com.fr.stable.xml.XMLPrintWriter;
 import com.fr.stable.xml.XMLableReader;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by richie on 15/12/2.
@@ -46,6 +54,16 @@ public class TemplateSource extends RHIframeSource {
             return null;
         }
         return null;
+    }
+
+    @Override
+    public String[] dependence(CalculatorProvider ca) {
+        Parameter[] parameters = ParameterHelper.analyze4Parameters(path, false);
+        List<String> collections = new ArrayList<String>();
+        for (Parameter parameter : parameters) {
+            collections.addAll(Arrays.asList(parameter.dependence(ca)));
+        }
+        return collections.toArray(new String[collections.size()]);
     }
 
     @Override

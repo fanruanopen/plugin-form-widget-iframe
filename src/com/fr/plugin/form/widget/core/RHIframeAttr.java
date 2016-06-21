@@ -8,22 +8,22 @@ import com.fr.json.JSONArray;
 import com.fr.json.JSONException;
 import com.fr.json.JSONObject;
 import com.fr.script.Calculator;
-import com.fr.stable.CodeUtils;
-import com.fr.stable.ParameterProvider;
-import com.fr.stable.UtilEvalError;
+import com.fr.stable.*;
 import com.fr.stable.js.WidgetName;
+import com.fr.stable.script.CalculatorProvider;
 import com.fr.stable.script.NameSpace;
 import com.fr.stable.xml.*;
 import com.fr.web.core.SessionIDInfor;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by richie on 15/12/2.
  */
-public class RHIframeAttr implements XMLable {
+public class RHIframeAttr implements XMLable, DependenceProvider  {
     public static final String XML_TAG = "RHIframeAttr";
 
     private RHIframeSource source;
@@ -46,9 +46,25 @@ public class RHIframeAttr implements XMLable {
         this.parameters = parameters;
     }
 
+    @Override
+    public String[] dependence(CalculatorProvider ca) {
+        List<String> data = new ArrayList<String>();
+        data.addAll(Arrays.asList(source.dependence(ca)));
+        if (parameters != null) {
+            for (ParameterProvider parameter : parameters) {
+                data.addAll(Arrays.asList(parameter.dependence(ca)));
+            }
+        }
+        return data.toArray(new String[data.size()]);
+    }
+
     public void mixConfig(JSONObject jo, Calculator c, HttpServletRequest req) throws JSONException {
         if (source != null) {
             jo.put("src", source.getCalculatedUrl(c, req));
+        }
+        String[] dependence = dependence(c);
+        if (!ArrayUtils.isEmpty(dependence)) {
+            jo.put("dependence", dependence);
         }
     }
 

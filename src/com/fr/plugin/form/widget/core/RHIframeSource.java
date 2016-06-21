@@ -1,6 +1,7 @@
 package com.fr.plugin.form.widget.core;
 
 import com.fr.script.Calculator;
+import com.fr.stable.DependenceProvider;
 import com.fr.stable.xml.XMLPrintWriter;
 import com.fr.stable.xml.XMLable;
 import com.fr.stable.xml.XMLableReader;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by richie on 15/12/2.
  */
-public class RHIframeSource implements XMLable {
+public abstract class RHIframeSource implements XMLable, DependenceProvider {
 
     public static final String XML_TAG = "RHIframeSource";
 
