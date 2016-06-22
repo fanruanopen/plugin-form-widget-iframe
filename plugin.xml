@@ -4,7 +4,7 @@
     <active>yes</active>
     <version>4.1</version>
     <env-version>8.0</env-version>
-    <jartime>2016-01-15</jartime>
+    <jartime>2016-06-30</jartime>
     <vendor email="solution@finereport.com">solution</vendor>
     <description><![CDATA[网页框控件,仅支持在表单中使用]]></description>
     <change-notes><![CDATA[
@@ -13,6 +13,7 @@
        <p>[2016-01-15]实现功能改进数据统计接口</p>
        <p>[2016-03-28]在填报中也可以使用</p>
        <p>[2016-04-19]修复这个插件单独从tomcat启动时无法使用的问题</p>
+       <p>[2016-06-30]增加插件可以联动的功能</p>
     ]]></change-notes>
     <extra-core>
         <LocaleFinder class="com.fr.plugin.form.widget.locale.LocaleFinder"/>
