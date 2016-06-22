@@ -65,6 +65,7 @@ public class RHIframeAttr implements XMLable, DependenceProvider  {
         String[] dependence = dependence(c);
         if (!ArrayUtils.isEmpty(dependence)) {
             jo.put("dependence", dependence);
+            jo.put("valueDependence", dependence);
         }
     }
 

@@ -2,6 +2,7 @@ package com.fr.plugin.form.widget.core;
 
 import com.fr.form.ui.DataControl;
 import com.fr.form.ui.FieldEditor;
+import com.fr.form.ui.Interactive;
 import com.fr.form.ui.WidgetValue;
 import com.fr.general.FRLogger;
 import com.fr.general.Inter;
@@ -29,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by richie on 15/12/2.
  */
-public class RHIframe extends FieldEditor implements DataControl {
+public class RHIframe extends FieldEditor implements Interactive {
 
     private static final FunctionProcessor RH = new AbstractFunctionProcessor() {
         @Override
@@ -79,10 +80,6 @@ public class RHIframe extends FieldEditor implements DataControl {
 
     @Override
     public JSONObject createJSONConfig(Repository repo, Calculator c, NodeVisitor nodeVisitor) throws JSONException {
-        FunctionProcessor p = ExtraClassManager.getInstance().getFunctionProcessor();
-        if (p != null) {
-            p.recordFunction(RH);
-        }
         JSONObject jo = super.createJSONConfig(repo, c, nodeVisitor);
         attr.mixConfig(jo, c, repo.getHttpServletRequest());
         jo.put("showOverFlowX", overflowX);
@@ -151,27 +148,13 @@ public class RHIframe extends FieldEditor implements DataControl {
     }
 
     @Override
-    public int[] getValueType() {
-        return new int[0];
-    }
-
-    @Override
-    public void setWidgetValue(WidgetValue value) {
-
-    }
-
-    @Override
-    public WidgetValue getWidgetValue() {
-        return null;
-    }
-
-    @Override
-    public void createValueResult(DataControl widget, Calculator widgetCalculator, JSONObject widgetResult, JSONObject attrSourceCache) {
-        try {
-            JSONObject data = JSONObject.create();
-            widgetResult.put(widgetName.toUpperCase(), data);
-        } catch (JSONException e) {
-            FRLogger.getLogger().error(e.getMessage(), e);
+    public void mixinReturnData(HttpServletRequest req, Calculator ca, JSONObject jo) throws JSONException {
+        if (widgetName != null) {
+            RHIframeSource source = attr.getSource();
+            if (source != null) {
+                String url = source.getCalculatedUrl(ca, req);
+                jo.put(widgetName.toUpperCase(), url);
+            }
         }
     }
 }
