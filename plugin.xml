@@ -2,7 +2,7 @@
     <id>com.fr.solution.plugin.form.widget.rh.iframe</id>
     <name><![CDATA[网页框控件]]></name>
     <active>yes</active>
-    <version>4.1</version>
+    <version>5.0</version>
     <env-version>8.0</env-version>
     <jartime>2016-06-30</jartime>
     <vendor email="solution@finereport.com">solution</vendor>
