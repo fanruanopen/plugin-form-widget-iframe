@@ -2,7 +2,7 @@
     <id>com.fr.solution.plugin.form.widget.rh.iframe</id>
     <name><![CDATA[网页框控件]]></name>
     <active>yes</active>
-    <version>5.0</version>
+    <version>5.2</version>
     <env-version>8.0</env-version>
     <jartime>2016-06-30</jartime>
     <vendor email="solution@finereport.com">solution</vendor>
@@ -14,6 +14,8 @@
        <p>[2016-03-28]在填报中也可以使用</p>
        <p>[2016-04-19]修复这个插件单独从tomcat启动时无法使用的问题</p>
        <p>[2016-06-30]增加插件可以联动的功能</p>
+       <p>[2016-07-29]修复不设置网页框地址时会导致整个表单无法展示的BUG</p>
+       <p>[2016-07-29]网页地址不加http的时候自动加上</p>
     ]]></change-notes>
     <extra-core>
         <LocaleFinder class="com.fr.plugin.form.widget.locale.LocaleFinder"/>

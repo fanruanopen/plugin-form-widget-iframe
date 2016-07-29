@@ -48,6 +48,9 @@ public class RHIframeAttr implements XMLable, DependenceProvider  {
 
     @Override
     public String[] dependence(CalculatorProvider ca) {
+        if (source == null) {
+            return ArrayUtils.EMPTY_STRING_ARRAY;
+        }
         List<String> data = new ArrayList<String>();
         data.addAll(Arrays.asList(source.dependence(ca)));
         if (parameters != null) {
@@ -61,11 +64,11 @@ public class RHIframeAttr implements XMLable, DependenceProvider  {
     public void mixConfig(JSONObject jo, Calculator c, HttpServletRequest req) throws JSONException {
         if (source != null) {
             jo.put("src", source.getCalculatedUrl(c, req));
-        }
-        String[] dependence = dependence(c);
-        if (!ArrayUtils.isEmpty(dependence)) {
-            jo.put("dependence", dependence);
-            jo.put("valueDependence", dependence);
+            String[] dependence = dependence(c);
+            if (!ArrayUtils.isEmpty(dependence)) {
+                jo.put("dependence", dependence);
+                jo.put("valueDependence", dependence);
+            }
         }
     }
 

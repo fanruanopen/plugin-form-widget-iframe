@@ -39,7 +39,11 @@ public class URLSource extends RHIframeSource {
     @Override
     public String getCalculatedUrl(Calculator calculator, HttpServletRequest req) {
         try {
-            return TemplateUtils.render(url, calculator);
+            String result =  TemplateUtils.render(url, calculator);
+            if (result != null && !result.toLowerCase().startsWith("http")) {
+                result = "http://" + result;
+            }
+            return result;
         } catch (Exception e) {
             return null;
         }
