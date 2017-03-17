@@ -1,10 +1,15 @@
 package com.fr.plugin.form.widget.core;
 
+import com.fr.base.Formula;
 import com.fr.base.Parameter;
 import com.fr.base.ParameterHelper;
 import com.fr.base.TemplateUtils;
+import com.fr.general.FRLogger;
+import com.fr.general.GeneralUtils;
 import com.fr.general.Inter;
 import com.fr.script.Calculator;
+import com.fr.stable.StableUtils;
+import com.fr.stable.UtilEvalError;
 import com.fr.stable.script.CalculatorProvider;
 import com.fr.stable.xml.XMLPrintWriter;
 import com.fr.stable.xml.XMLableReader;
@@ -38,15 +43,25 @@ public class URLSource extends RHIframeSource {
 
     @Override
     public String getCalculatedUrl(Calculator calculator, HttpServletRequest req) {
-        try {
-            String result =  TemplateUtils.render(url, calculator);
-            if (result != null && !result.toLowerCase().startsWith("http")) {
-                result = "http://" + result;
+        String result = null;
+        if (StableUtils.canBeFormula(url)) {
+            try {
+                result = GeneralUtils.objectToString(calculator.eval(new Formula(url)));
+            } catch (UtilEvalError u) {
+                FRLogger.getLogger().error(u.getMessage(), u);
             }
-            return result;
-        } catch (Exception e) {
-            return null;
+        } else {
+            try {
+                result = TemplateUtils.render(url, calculator);
+            } catch (Exception e) {
+                FRLogger.getLogger().error(e.getMessage(), e);
+            }
         }
+
+        if (result != null && !result.toLowerCase().startsWith("http")) {
+            result = "http://" + result;
+        }
+        return result;
     }
 
     @Override

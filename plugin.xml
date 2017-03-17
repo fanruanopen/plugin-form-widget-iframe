@@ -2,20 +2,21 @@
     <id>com.fr.solution.plugin.form.widget.rh.iframe</id>
     <name><![CDATA[网页框控件]]></name>
     <active>yes</active>
-    <version>5.2</version>
+    <version>6.0</version>
     <env-version>8.0</env-version>
     <jartime>2016-06-30</jartime>
     <vendor email="solution@finereport.com">solution</vendor>
     <description><![CDATA[网页框控件,仅支持在表单中使用]]></description>
     <change-notes><![CDATA[
-       <p>[2015-12-03]修复再次打开地址设置界面时没有正确选择到选项的问题</p>
-       <p>[2016-01-13]增加常用的API接口</p>
-       <p>[2016-01-15]实现功能改进数据统计接口</p>
-       <p>[2016-03-28]在填报中也可以使用</p>
-       <p>[2016-04-19]修复这个插件单独从tomcat启动时无法使用的问题</p>
-       <p>[2016-06-30]增加插件可以联动的功能</p>
-       <p>[2016-07-29]修复不设置网页框地址时会导致整个表单无法展示的BUG</p>
-       <p>[2016-07-29]网页地址不加http的时候自动加上</p>
+        [2017-03-17]修复公式无法正确解析的问题。<br/>
+        [2016-07-29]网页地址不加http的时候自动加上。<br/>
+        [2016-07-29]修复不设置网页框地址时会导致整个表单无法展示的BUG。<br/>
+        [2016-06-30]增加插件可以联动的功能。<br/>
+        [2016-04-19]修复这个插件单独从tomcat启动时无法使用的问题。<br/>
+        [2016-03-28]在填报中也可以使用。<br/>
+        [2016-01-15]实现功能改进数据统计接口。<br/>
+        [2016-01-13]增加常用的API接口。<br/>
+        [2015-12-03]修复再次打开地址设置界面时没有正确选择到选项的问题。<br/>
     ]]></change-notes>
     <extra-core>
         <LocaleFinder class="com.fr.plugin.form.widget.locale.LocaleFinder"/>
