@@ -2,12 +2,15 @@
     <id>com.fr.solution.plugin.form.widget.rh.iframe</id>
     <name><![CDATA[网页框控件]]></name>
     <active>yes</active>
-    <version>6.0</version>
+    <version>6.3</version>
     <env-version>8.0</env-version>
     <jartime>2016-06-30</jartime>
     <vendor email="solution@finereport.com">solution</vendor>
     <description><![CDATA[网页框控件,仅支持在表单中使用]]></description>
     <change-notes><![CDATA[
+        [2017-06-20]修复模板类型的网页框参数为中文时候的问题。<br/>
+        [2017-06-14]模板类型的网页框链接支持数组参数。<br/>
+        [2017-06-13]修复模板名字不能为中文的问题。<br/>
         [2017-03-17]修复公式无法正确解析的问题。<br/>
         [2016-07-29]网页地址不加http的时候自动加上。<br/>
         [2016-07-29]修复不设置网页框地址时会导致整个表单无法展示的BUG。<br/>

@@ -4,12 +4,19 @@ import com.fr.base.Formula;
 import com.fr.base.Parameter;
 import com.fr.base.ParameterHelper;
 import com.fr.base.TemplateUtils;
+import com.fr.general.FArray;
 import com.fr.general.FRLogger;
 import com.fr.general.GeneralUtils;
 import com.fr.general.Inter;
+import com.fr.json.JSONArray;
+import com.fr.json.JSONException;
+import com.fr.json.JSONObject;
 import com.fr.script.Calculator;
+import com.fr.stable.CodeUtils;
+import com.fr.stable.ParameterProvider;
 import com.fr.stable.StableUtils;
 import com.fr.stable.UtilEvalError;
+import com.fr.stable.js.WidgetName;
 import com.fr.stable.script.CalculatorProvider;
 import com.fr.stable.xml.XMLPrintWriter;
 import com.fr.stable.xml.XMLableReader;
@@ -72,6 +79,37 @@ public class URLSource extends RHIframeSource {
             collections.addAll(Arrays.asList(parameter.dependence(ca)));
         }
         return collections.toArray(new String[collections.size()]);
+    }
+
+    @Override
+    public void mixCalculatedParameters(Calculator c, JSONArray ja, ParameterProvider[] parameters) throws JSONException, UtilEvalError  {
+        for (int i = 0; i < (parameters == null ? 0 : parameters.length); i++) {
+            Object obj = parameters[i].getValue();
+            if (obj instanceof Formula) {
+                String content = ((Formula) obj).getContent();
+                obj = c.evalValue(content);
+            }
+            JSONObject jo = JSONObject.create();
+            if (obj instanceof String) {
+                obj = CodeUtils.cjkEncode((String) obj);
+                jo.put(parameters[i].getName(), obj);
+            } else if (obj instanceof FArray) {
+                obj = ((FArray) obj).cjkEncode();
+                jo.put(parameters[i].getName(), obj);
+            } else if (obj instanceof WidgetName) {
+                jo.put("widgetName", ((WidgetName) obj).getName());
+            } else {
+                // 还可以是数字啊什么的
+                jo.put(parameters[i].getName(), obj);
+            }
+
+            ja.put(jo);
+        }
+    }
+
+    @Override
+    public String getSourceType() {
+        return "url";
     }
 
     @Override

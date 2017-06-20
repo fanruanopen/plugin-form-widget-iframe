@@ -1,12 +1,22 @@
 package com.fr.plugin.form.widget.core;
 
+import com.fr.base.Formula;
 import com.fr.base.Parameter;
 import com.fr.base.ParameterHelper;
 import com.fr.base.TemplateUtils;
 import com.fr.data.NetworkHelper;
+import com.fr.general.FArray;
+import com.fr.general.GeneralUtils;
 import com.fr.general.Inter;
+import com.fr.json.JSONArray;
+import com.fr.json.JSONException;
+import com.fr.json.JSONObject;
+import com.fr.json.JSONUtils;
 import com.fr.script.Calculator;
-import com.fr.stable.ArrayUtils;
+import com.fr.stable.CodeUtils;
+import com.fr.stable.ParameterProvider;
+import com.fr.stable.UtilEvalError;
+import com.fr.stable.js.WidgetName;
 import com.fr.stable.script.CalculatorProvider;
 import com.fr.stable.xml.XMLPrintWriter;
 import com.fr.stable.xml.XMLableReader;
@@ -14,7 +24,6 @@ import com.fr.stable.xml.XMLableReader;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -46,9 +55,9 @@ public class TemplateSource extends RHIframeSource {
         try {
             String realPath = TemplateUtils.render(path, calculator);
             if (realPath.contains(".cpt")) {
-                return NetworkHelper.createServletURL(req) + "?reportlet=" + realPath;
+                return NetworkHelper.createServletURL(req) + "?reportlet=" + CodeUtils.cjkEncode(realPath);
             } else if (realPath.contains(".frm")) {
-                return NetworkHelper.createServletURL(req) + "?formlet=" + realPath;
+                return NetworkHelper.createServletURL(req) + "?formlet=" + CodeUtils.cjkEncode(realPath);
             }
         } catch (Exception e) {
             return null;
@@ -64,6 +73,39 @@ public class TemplateSource extends RHIframeSource {
             collections.addAll(Arrays.asList(parameter.dependence(ca)));
         }
         return collections.toArray(new String[collections.size()]);
+    }
+
+    @Override
+    public void mixCalculatedParameters(Calculator c, JSONArray ja, ParameterProvider[] parameters) throws JSONException, UtilEvalError {
+        if (parameters == null) {
+            return;
+        }
+        // richie：这里的key/value不需要做CJKEncode，在前端会处理的
+        for (ParameterProvider parameter : parameters) {
+            JSONObject jo = JSONObject.create();
+            String key = parameter.getName();
+            Object obj = parameter.getValue();
+            if (obj instanceof Formula) {
+                String content = ((Formula) obj).getContent();
+                obj = c.evalValue(content);
+            }
+            if (obj instanceof String) {
+                jo.put(parameter.getName(), obj);
+            } else if (obj instanceof FArray) {
+                jo.put(key, obj);
+            } else if (obj instanceof WidgetName) {
+                jo.put("widgetName", ((WidgetName) obj).getName());
+            } else {
+                // 还可以是数字啊什么的
+                jo.put(key, obj);
+            }
+            ja.put(jo);
+        }
+    }
+
+    @Override
+    public String getSourceType() {
+        return "tpl";
     }
 
     @Override

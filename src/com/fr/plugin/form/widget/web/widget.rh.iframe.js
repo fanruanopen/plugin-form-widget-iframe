@@ -122,7 +122,7 @@
                             waitForInitComplete.push(params.widgetName);
                         }
                     } else {
-                        src = src.appendQuery(params);
+                        src = self._appendQuery(src, params);
                     }
                 }
 
@@ -141,6 +141,45 @@
                 }
             }
             this._changeIframe(src);
+        },
+        /**
+         * 给url加上给定的参数
+         * @param {String} src 原地址
+         * @param {Object} paras 参数对象，是一个键值对对象
+         * @return {String} 添加了给定参数的url
+         */
+        _appendQuery: function (src, paras) {
+            if (!paras) {
+                return src;
+            }
+            // 没有问号说明还没有参数
+            if (src.indexOf("?") === -1) {
+                src += "?";
+            }
+            // 如果以问号结尾，说明没有其他参数
+            if (src.endWith("?") !== false) {
+            } else {
+                src += "&";
+            }
+            debugger;
+            // 模板
+            if (this.options.sourceType == 'tpl') {
+                $.each(paras, function (pName, pValue) {
+                    if (FR.isArray(pValue)) {
+                        paras[pName] = pValue;
+                    } else {
+                        paras[pName] = encodeURIComponent(pValue);
+                    }
+                });
+                src += "__parameters__=" + FR.cjkEncode(FR.jsonEncode(paras));
+            } else {
+                $.each(paras, function (name, value) {
+                    if (typeof(name) === 'string') {
+                        src += name + "=" + value + "&";
+                    }
+                });
+            }
+            return encodeURI(src);
         },
 
         /**

@@ -1,18 +1,22 @@
 package com.fr.plugin.form.widget.core;
 
-import com.fr.base.Formula;
 import com.fr.base.ParameterMapNameSpace;
-import com.fr.general.FArray;
 import com.fr.general.xml.GeneralXMLTools;
 import com.fr.json.JSONArray;
 import com.fr.json.JSONException;
 import com.fr.json.JSONObject;
 import com.fr.script.Calculator;
-import com.fr.stable.*;
-import com.fr.stable.js.WidgetName;
+import com.fr.stable.ArrayUtils;
+import com.fr.stable.DependenceProvider;
+import com.fr.stable.ParameterProvider;
+import com.fr.stable.UtilEvalError;
 import com.fr.stable.script.CalculatorProvider;
 import com.fr.stable.script.NameSpace;
-import com.fr.stable.xml.*;
+import com.fr.stable.xml.StableXMLUtils;
+import com.fr.stable.xml.XMLPrintWriter;
+import com.fr.stable.xml.XMLReadable;
+import com.fr.stable.xml.XMLable;
+import com.fr.stable.xml.XMLableReader;
 import com.fr.web.core.SessionIDInfor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,33 +73,16 @@ public class RHIframeAttr implements XMLable, DependenceProvider  {
                 jo.put("dependence", dependence);
                 jo.put("valueDependence", dependence);
             }
+            jo.put("sourceType", source.getSourceType());
         }
     }
 
     public void mixJSONData(JSONArray ja, SessionIDInfor sessionIDInfor, Calculator c) throws JSONException, UtilEvalError {
         NameSpace ns = ParameterMapNameSpace.create(sessionIDInfor.getParameterMap4Execute());
         c.pushNameSpace(ns);
-        for (int i = 0; i < (parameters == null ? 0 : parameters.length); i++) {
-            Object obj = parameters[i].getValue();
-            if (obj instanceof Formula) {
-                String content = ((Formula) obj).getContent();
-                obj = c.evalValue(content);
-            }
-            JSONObject jo = new JSONObject();
-            if (obj instanceof String) {
-                obj = CodeUtils.cjkEncode((String) obj);
-                jo.put(parameters[i].getName(), obj);
-            } else if (obj instanceof FArray) {
-                obj = ((FArray) obj).cjkEncode();
-                jo.put(parameters[i].getName(), obj);
-            } else if (obj instanceof WidgetName) {
-                jo.put("widgetName", ((WidgetName) obj).getName());
-            } else {
-                // 还可以是数字啊什么的
-                jo.put(parameters[i].getName(), obj);
-            }
 
-            ja.put(jo);
+        if (source != null) {
+            source.mixCalculatedParameters(c, ja, parameters);
         }
     }
 
