@@ -161,7 +161,6 @@
             } else {
                 src += "&";
             }
-            debugger;
             // 模板
             if (this.options.sourceType == 'tpl') {
                 $.each(paras, function (pName, pValue) {
