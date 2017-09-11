@@ -102,12 +102,6 @@
             var src = this.options.src, self = this;
             // 获取参数组
             if (this.options.data) {
-                //bug:63869这个遍历没有必要下面都有ifelse了
-                //for (var i = 0, len = this.options.data.getLength(); i < len; i++) {
-                //    var params = this.options.data.getRecord(i).getContent();
-                //    src = src.appendQuery(params);
-                //}
-
                 var waitForInitComplete = [];
 
                 for (var i = 0, len = this.options.data.getLength(); i < len; i++) {
@@ -142,6 +136,7 @@
             }
             this._changeIframe(src);
         },
+
         /**
          * 给url加上给定的参数
          * @param {String} src 原地址
@@ -162,23 +157,16 @@
                 src += "&";
             }
             // 模板
-            if (this.options.sourceType == 'tpl') {
-                $.each(paras, function (pName, pValue) {
-                    if (FR.isArray(pValue)) {
-                        paras[pName] = pValue;
-                    } else {
-                        paras[pName] = encodeURIComponent(pValue);
-                    }
-                });
-                src += "__parameters__=" + FR.cjkEncode(FR.jsonEncode(paras));
-            } else {
-                $.each(paras, function (name, value) {
-                    if (typeof(name) === 'string') {
-                        src += name + "=" + value + "&";
-                    }
-                });
-            }
-            return encodeURI(src);
+            $.each(paras, function (name, value) {
+                if (typeof(name) === 'string') {
+                    src += name + "=" + value;
+                }
+            });
+            return src;
+        },
+
+        _prefix : function (src) {
+
         },
 
         /**
@@ -222,6 +210,9 @@
          * @private
          */
         _changeIframe: function (src) {
+            if (this.options.sourceType === 'url') {
+                src = encodeURI(src);
+            }
             this.$iframe.attr("src", src);
         },
 

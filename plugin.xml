@@ -2,12 +2,13 @@
     <id>com.fr.solution.plugin.form.widget.rh.iframe</id>
     <name><![CDATA[网页框控件]]></name>
     <active>yes</active>
-    <version>6.4</version>
+    <version>6.5</version>
     <env-version>8.0</env-version>
     <jartime>2016-06-30</jartime>
-    <vendor email="solution@finereport.com">solution</vendor>
+    <vendor email="solution@fanruan.com">solution</vendor>
     <description><![CDATA[网页框控件,仅支持在表单中使用]]></description>
     <change-notes><![CDATA[
+        [2017-09-11]去掉encode。<br/>
         [2017-06-29]去除调试信息。<br/>
         [2017-06-20]修复模板类型的网页框参数为中文时候的问题。<br/>
         [2017-06-14]模板类型的网页框链接支持数组参数。<br/>
