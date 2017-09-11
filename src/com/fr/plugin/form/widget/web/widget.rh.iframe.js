@@ -210,9 +210,11 @@
          * @private
          */
         _changeIframe: function (src) {
+
             if (this.options.sourceType === 'url') {
                 src = encodeURI(src);
             }
+
             this.$iframe.attr("src", src);
         },
 
